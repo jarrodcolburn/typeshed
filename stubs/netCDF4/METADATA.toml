@@ -2,3 +2,6 @@ version = "1.6.*"
 
 [tool.stubtest]
 ignore_missing_stub = false
+
+[mypy]
+plugins = numpy.typing.mypy_plugin
