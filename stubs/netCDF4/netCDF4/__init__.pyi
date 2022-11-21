@@ -1,7 +1,7 @@
 from ._netCDF4 import *
 
-Names in __all__ with no definition:
-  CompoundType
+# Names in __all__ with no definition:
+  # CompoundType
 #   Dataset
 #   Dimension
 #   EnumType
