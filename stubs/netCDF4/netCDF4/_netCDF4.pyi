@@ -1,8 +1,11 @@
+# pylint: disable=unused-argument
+# pylint: disable=missing-docstring
+# pylint: disable=multiple-statements
+# pylint: disable=invalid-name
 from __future__ import annotations
 from typing import Any, overload, Literal, Sequence, Callable
 from numpy.typing import DTypeLike
 
-# import cftime as cf
 
 NC_DISKLESS: int
 NC_PERSIST: int
@@ -36,13 +39,24 @@ default_encoding: str
 is_native_big: bool
 is_native_little: bool
 unicode_error: str
+class _Variable:
+    def __init__(self, *args, **kwargs) -> None: ...
 
+#     # def _shape(self, *args, **kwargs) -> Any: ...
+#     def ncattrs(self, *args, **kwargs) -> Any: ...
+#     def set_always_mask(self, *args, **kwargs) -> Any: ...
+#     def set_auto_chartostring(self, *args, **kwargs) -> Any: ...
+#     def set_auto_mask(self, *args, **kwargs) -> Any: ...
+#     def set_auto_maskandscale(self, *args, **kwargs) -> Any: ...
+#     def set_auto_scale(self, *args, **kwargs) -> Any: ...
+#     def typecode(self, *args, **kwargs) -> Any: ...
+#     # def __getattr__(self, name) -> Any: ...
 class CompoundType:
     # _nc_type: Any
     dtype: DTypeLike
     dtype_view: Any
     name: str
-    # def __init__(self, group: Group, datatype, datatype_name: str) -> None: ...
+    def __init__(self, group: Group, datatype, datatype_name: str) -> None: ...
     # def __reduce__(self) -> Any: ...
 
 class Dataset:
@@ -50,11 +64,35 @@ class Dataset:
     # _isopen: Any
     # _ncstring_attrs__: Any
     cmptypes: dict[str, CompoundType]
-    data_model: Literal["a", "a+s", "r", "r+", "r+s", "rs", "w", "ws", "x",]
+    data_model: Literal[
+        "a",
+        "a+s",
+        "r",
+        "r+",
+        "r+s",
+        "rs",
+        "w",
+        "ws",
+        "x",
+    ]
     dimensions: dict[str, Dimension]
-    disk_format: Literal["DAP2", "DAP4", "HDF4", "HDF5", "NETCDF3", "PNETCDF", "UNDEFINED",]
+    disk_format: Literal[
+        "DAP2",
+        "DAP4",
+        "HDF4",
+        "HDF5",
+        "NETCDF3",
+        "PNETCDF",
+        "UNDEFINED",
+    ]
     enumtypes: dict[str, EnumType]
-    file_format: Literal["NETCDF3_64BIT_DATA", "NETCDF3_64BIT_OFFSET", "NETCDF3_CLASSIC", "NETCDF4_CLASSIC", "NETCDF4",]
+    file_format: Literal[
+        "NETCDF3_64BIT_DATA",
+        "NETCDF3_64BIT_OFFSET",
+        "NETCDF3_CLASSIC",
+        "NETCDF4_CLASSIC",
+        "NETCDF4",
+    ]
     groups: dict[str, Group]
     keepweakref: bool
     name: str
@@ -66,7 +104,17 @@ class Dataset:
     def __init__(
         self,
         filename: str = ...,
-        mode: Literal["a", "a+s", "r", "r+", "r+s", "rs", "w", "ws", "x",] = ...,
+        mode: Literal[
+            "a",
+            "a+s",
+            "r",
+            "r+",
+            "r+s",
+            "rs",
+            "w",
+            "ws",
+            "x",
+        ] = ...,
         clobber: bool = ...,
         diskless: bool = ...,
         persist: bool = ...,
@@ -76,7 +124,13 @@ class Dataset:
         parallel: bool = ...,
         comm=...,
         info=...,
-        format: Literal["NETCDF3_64BIT_DATA", "NETCDF3_64BIT_OFFSET", "NETCDF3_CLASSIC", "NETCDF4_CLASSIC", "NETCDF4",] = ...,
+        format: Literal[
+            "NETCDF3_64BIT_DATA",
+            "NETCDF3_64BIT_OFFSET",
+            "NETCDF3_CLASSIC",
+            "NETCDF4_CLASSIC",
+            "NETCDF4",
+        ] = ...,
     ) -> None: ...
     # def _close(self, *args, **kwargs) -> Any: ...
     # def _close_mem(self, *args, **kwargs) -> Any: ...
@@ -86,7 +140,9 @@ class Dataset:
     def close(self) -> None: ...
     def createCompoundType(self, datatype, datatype_name: str) -> CompoundType: ...
     def createDimension(self, dimname: str, size: int = ...) -> Dimension: ...
-    def createEnumType(self, datatype, datatype_name: str, enum_dict: dict[str, int]) -> EnumType: ...
+    def createEnumType(
+        self, datatype, datatype_name: str, enum_dict: dict[str, int]
+    ) -> EnumType: ...
     def createGroup(self, groupname: str) -> Group: ...
     def createVLType(self, datatype, datatype_name: str) -> VLType: ...
     def createVariable(
@@ -94,7 +150,28 @@ class Dataset:
         varname: str,
         datatype: CompoundType
         | VLType
-        | Literal["S1", "c", "i1", "b", "B", "u1", "i2", "h", "s", "u2", "i4", "i", "l", "u4", "i8", "u8", "f4", "f", "f8", "d"],
+        | Literal[
+            "S1",
+            "c",
+            "i1",
+            "b",
+            "B",
+            "u1",
+            "i2",
+            "h",
+            "s",
+            "u2",
+            "i4",
+            "i",
+            "l",
+            "u4",
+            "i8",
+            "u8",
+            "f4",
+            "f",
+            "f8",
+            "d",
+        ],
         dimensions: tuple[str, ...] = ...,
         compression=...,
         zlib: bool = ...,
@@ -123,9 +200,9 @@ class Dataset:
     @overload
     def get_variables_by_attributes(self, axis=...) -> Any: ...
     @overload
-    def get_variables_by_attributes(self, axis=...) -> Any: ...
-    @overload
-    def get_variables_by_attributes(self, grid_mapping: Callable[[Any], bool] = ...) -> list[Variable]: ...
+    def get_variables_by_attributes(
+        self, grid_mapping: Callable[[Any], bool] = ...
+    ) -> list[Variable]: ...
     def getncattr(self, name: str) -> Any: ...
     def has_blosc_filter(self) -> bool: ...
     def has_bzip2_filter(self) -> bool: ...
@@ -149,7 +226,9 @@ class Dataset:
     def setncattr_string(self, name: str, value: dict[str, Any]) -> None: ...
     def setncatts(self, attdict) -> Any: ...
     def sync(self) -> None: ...
-    def tocdl(self, coordvars: bool = ..., data: bool = ..., outfile: str | None = ...) -> Any: ...
+    def tocdl(
+        self, coordvars: bool = ..., data: bool = ..., outfile: str | None = ...
+    ) -> Any: ...
     # def __delattr__(self, name) -> Any: ...
     # def __enter__(self) -> Any: ...
     # def __exit__(self, type, value, traceback) -> Any: ...
@@ -182,13 +261,16 @@ class EnumType:
     # def __init__(self, group, datatype, datatype_name, enum_dict) -> None: ...
     # def __reduce__(self) -> Any: ...
 
-class Group(Dataset):
-    # def __init__(self, parent: Group, name: str) -> None: ...
-    def close(self) -> IOError: ...
+class Group(Dataset): ...
 
 class MFDataset(Dataset):
     def __init__(
-        self, files: str | Sequence[str], check: bool = ..., aggdim: str | None = ..., exclude: list[str] = ..., master_file=...
+        self,
+        files: str | Sequence[str],
+        check: bool = ...,
+        aggdim: str | None = ...,
+        exclude: list[str] = ...,
+        master_file=...,
     ) -> None: ...
     def close(self) -> None: ...
     def ncattrs(self) -> Any: ...
@@ -200,8 +282,18 @@ class MFTime(_Variable):
         self,
         time,
         units: str | None = ...,
-        calendar: Literal["standard", "gregorian", "proleptic_gregorian", "noleap", "365_day", "360_day", "julian", "none"] | None = ...,
-    ) -> None: ...  # https://cfconventions.org/Data/cf-conventions/cf-conventions-1.7/build/ch04s04.html
+        calendar: Literal[
+            "standard",
+            "gregorian",
+            "proleptic_gregorian",
+            "noleap",
+            "365_day",
+            "360_day",
+            "julian",
+            "none",
+        ]
+        | None = ...,
+    ) -> None: ...
     # def __getitem__(self, index) -> Any: ...
 
 class VLType:
@@ -243,10 +335,18 @@ class Variable:
         self,
         group: Group | Dataset,
         name: str,
-        datatype: ...,
-        dimensions: tuple[str, int | None] = ...,
+        datatype=...,
+        dimensions: tuple[str, int] | None = ...,
         compression: Literal[
-            "zlib", "szip", "zstd", "bzip2", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"
+            "zlib",
+            "szip",
+            "zstd",
+            "bzip2",
+            "blosc_lz",
+            "blosc_lz4",
+            "blosc_lz4hc",
+            "blosc_zlib",
+            "blosc_zstd",
         ] = ...,
         zlib: bool = ...,
         complevel: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] = ...,
@@ -318,18 +418,7 @@ class Variable:
 #     # def __reduce__(self) -> Any: ...
 #     # def __setstate__(self, state) -> Any: ...
 
-class _Variable:
-    def __init__(self, *args, **kwargs) -> None: ...
 
-#     # def _shape(self, *args, **kwargs) -> Any: ...
-#     def ncattrs(self, *args, **kwargs) -> Any: ...
-#     def set_always_mask(self, *args, **kwargs) -> Any: ...
-#     def set_auto_chartostring(self, *args, **kwargs) -> Any: ...
-#     def set_auto_mask(self, *args, **kwargs) -> Any: ...
-#     def set_auto_maskandscale(self, *args, **kwargs) -> Any: ...
-#     def set_auto_scale(self, *args, **kwargs) -> Any: ...
-#     def typecode(self, *args, **kwargs) -> Any: ...
-#     # def __getattr__(self, name) -> Any: ...
 
 # def __getitem__(self, index) -> Any: ...
 # def __len__(self) -> int: ...
@@ -347,7 +436,12 @@ def get_alignment() -> Any: ...
 def get_chunk_cache() -> Any: ...
 def getlibversion() -> str: ...
 def num2date(
-    times, units, calendar=..., only_use_cftime_datetimes=..., only_use_python_datetimes=..., has_year_zero=...
+    times,
+    units,
+    calendar=...,
+    only_use_cftime_datetimes=...,
+    only_use_python_datetimes=...,
+    has_year_zero=...,
 ) -> Any: ...
 def set_alignment(threshold, alignment) -> Any: ...
 def set_chunk_cache(self, size=..., nelems=..., preemption=...) -> Any: ...
